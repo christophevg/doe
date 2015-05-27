@@ -1,0 +1,78 @@
+---
+layout: base
+---
+
+<div class="jumbotron">
+  <h1>You were born <span id="days">...</span> days ago.</h1>
+
+  <p>On <b><span id="d10k">...</span></b> you <span id="l10k">...</span> around for <b>10.000 days</b>.</p>
+  <p>On <b><span id="d15k">...</span></b> you <span id="l15k">...</span> around for <b>15.000 days</b>.</p>
+  <p>On <b><span id="d20k">...</span></b> you <span id="l20k">...</span> around for <b>20.000 days</b>.</p>
+  <p>On <b><span id="d25k">...</span></b> you <span id="l25k">...</span> around for <b>25.000 days</b>.</p>
+
+  <div class="g-plus"
+       data-action="share"
+       data-annotation="bubble"
+       data-height="24"
+       data-href="http://christophevg.github.io/doe"></div>
+
+  <a id="twitter" class="twitter-share-button"
+     data-size="large"
+     data-text=""
+     data-url="http://chirstophevg.github.io/doe"
+     href="https://twitter.com/intent/tweet">Tweet</a>
+
+<script>
+  // via http://stackoverflow.com/questions/19491336/get-url-parameter-jquery
+  function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for(var i = 0; i < sURLVariables.length; i++) {
+      var sParameterName = sURLVariables[i].split('=');
+      if (sParameterName[0] == sParam) {
+        return sParameterName[1];
+      }
+    }
+  }  
+
+  $(document).ready(function() {
+    var value = getUrlParameter("date");
+    var birth = moment(value, "DD-MM-YYYY");
+    if( ! birth.isValid() ) { window.location = "./"; }
+
+    var now = moment();
+    var d10k = moment(birth).add(10000, 'days');
+    var d15k = moment(birth).add(15000, 'days');
+    var d20k = moment(birth).add(20000, 'days');
+    var d25k = moment(birth).add(25000, 'days');
+    
+    var days = now.diff(birth, 'days');
+
+    $('#days').text(days);
+    
+    $('#twitter').attr('data-text', "I was born " + days
+      + " days ago. Learn more about your own birthday at");
+    
+    $('#d10k').text(d10k.format("dddd MMMM Do YYYY"));
+    $('#d15k').text(d15k.format("dddd MMMM Do YYYY"));
+    $('#d20k').text(d20k.format("dddd MMMM Do YYYY"));
+    $('#d25k').text(d25k.format("dddd MMMM Do YYYY"));
+
+    $('#l10k').text(d10k.isBefore(now) ? "were" : "will be");
+    $('#l15k').text(d15k.isBefore(now) ? "were" : "will be");
+    $('#l20k').text(d20k.isBefore(now) ? "were" : "will be");
+    $('#l25k').text(d25k.isBefore(now) ? "were" : "will be");
+
+    // GOOGLE+
+    (function() {
+      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+      po.src = 'https://apis.google.com/js/platform.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+
+    // TWITTER
+    $.getScript('http://platform.twitter.com/widgets.js');
+  });
+</script>
+
+</div>
